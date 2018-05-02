@@ -84,9 +84,7 @@ public class MainActivity
 
     @Override
     public void showError() {
-        if (swipeRefreshLayout.isRefreshing()) {
-            swipeRefreshLayout.setRefreshing(false);
-        }
+        turnOffSwipeRefresh();
         swipeRefreshLayout.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.GONE);
 
@@ -106,10 +104,15 @@ public class MainActivity
 
     @Override
     public void showData(List<Currencies> currencies) {
-        if (swipeRefreshLayout.isRefreshing()) swipeRefreshLayout.setRefreshing(false);
+        turnOffSwipeRefresh();
         swipeRefreshLayout.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.GONE);
         errorTextView.setVisibility(View.GONE);
         rateAdapter.setItems(currencies);
+    }
+
+    private void turnOffSwipeRefresh() {
+        if (swipeRefreshLayout.isRefreshing())
+            swipeRefreshLayout.setRefreshing(false);
     }
 }
