@@ -26,6 +26,8 @@ public class MainActivity
     private SwipeRefreshLayout swipeRefreshLayout;
     private View progressBar;
     private View errorTextView;
+    private Toolbar toolbar;
+    private RecyclerView recyclerView;
     @Inject RatesContract.Presenter presenter;
 
     @Override
@@ -33,25 +35,32 @@ public class MainActivity
         super.onCreate(savedInstanceState);
         App.component.injects(this);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = findViewById(R.id.toolbar);
+
+        init();
+
         setSupportActionBar(toolbar);
 
-        swipeRefreshLayout = findViewById(R.id.swipeToRefreshLayout);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 load(true);
             }
         });
-        RecyclerView recyclerView = findViewById(R.id.recyclerView);
+
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         rateAdapter = new RateAdapter();
         recyclerView.setAdapter(rateAdapter);
-        progressBar = findViewById(R.id.progressBar);
-        errorTextView = findViewById(R.id.errorTextView);
 
         presenter.attachView(this);
         load(false);
+    }
+
+    private void init() {
+        toolbar = findViewById(R.id.toolbar);
+        swipeRefreshLayout = findViewById(R.id.swipeToRefreshLayout);
+        recyclerView = findViewById(R.id.recyclerView);
+        progressBar = findViewById(R.id.progressBar);
+        errorTextView = findViewById(R.id.errorTextView);
     }
 
     @Override
@@ -75,10 +84,12 @@ public class MainActivity
 
     @Override
     public void showError() {
-        if (swipeRefreshLayout.isRefreshing()) swipeRefreshLayout.setRefreshing(false);
+        if (swipeRefreshLayout.isRefreshing()) {
+            swipeRefreshLayout.setRefreshing(false);
+        }
         swipeRefreshLayout.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.GONE);
-        //errorTextView.setVisibility(View.VISIBLE);
+
         AlertDialog.Builder adb = new AlertDialog.Builder(this);
         adb.setMessage(getString(R.string.alert_message));
 

@@ -24,13 +24,15 @@ public class RatesPresenter implements RatesContract.Presenter {
     }
 
     @Override
-    public void load(boolean refresh) {
-        if (view != null) view.showLoading(refresh);
+    public void load(final boolean refresh) {
+
 
         repo.load(refresh)
                 .subscribe(new SingleObserver<RateResponse>() {
                     @Override
                     public void onSubscribe(Disposable d) {
+                        if (view != null)
+                            view.showLoading(refresh);
                     }
 
                     @Override

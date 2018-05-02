@@ -19,19 +19,10 @@ import ru.alfabank.currencyrates.models.Currencies;
 public class RateAdapter extends RecyclerView.Adapter<RateAdapter.RateVH> {
 
     private final List<Currencies> items = new ArrayList<>();
-    private final DecimalFormat formatter;
+    //private final DecimalFormat formatter;
 
     public RateAdapter() {
         super();
-        formatter = new DecimalFormat();
-        formatter.setMinimumFractionDigits(2);
-        formatter.setGroupingUsed(true);
-        formatter.setGroupingSize(3);
-        DecimalFormatSymbols symbols = new DecimalFormatSymbols();
-        symbols.setDecimalSeparator('.');
-        symbols.setGroupingSeparator(' ');
-        formatter.setDecimalFormatSymbols(symbols);
-        formatter.setRoundingMode(RoundingMode.DOWN);
     }
 
     @NonNull
@@ -81,8 +72,14 @@ public class RateAdapter extends RecyclerView.Adapter<RateAdapter.RateVH> {
             name.setText(rate.code);
             description.setText(rate.description);
 
-            sellRate.setText(formatter.format(new BigDecimal(rate.ratesByDate.get(0).currencyRates.get(0).sellRate)));
-            buyRate.setText(formatter.format(new BigDecimal(rate.ratesByDate.get(0).currencyRates.get(0).buyRate)));
+            sellRate.setText(FormatUtils.formatAmount(rate.ratesByDate.get(0).currencyRates.get(0).sellRate));
+            buyRate.setText(FormatUtils.formatAmount(rate.ratesByDate.get(0).currencyRates.get(0).buyRate));
+
+            checkWeekChanges(rate);
+
+        }
+
+        void checkWeekChanges(Currencies rate) {
 
             if (Double.parseDouble(rate.ratesByDate.get(0).currencyRates.get(0).sellRate) <
                     Double.parseDouble(rate.ratesByDate.get(6).currencyRates.get(0).sellRate))
@@ -95,6 +92,7 @@ public class RateAdapter extends RecyclerView.Adapter<RateAdapter.RateVH> {
                 arrowBuy.setImageDrawable(itemView.getResources().getDrawable(R.drawable.down_arrow));
             else
                 arrowBuy.setImageDrawable(itemView.getResources().getDrawable(R.drawable.up_arrow));
+
         }
     }
 }

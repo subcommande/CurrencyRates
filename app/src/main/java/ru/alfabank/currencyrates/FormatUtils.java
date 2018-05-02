@@ -20,11 +20,13 @@ public class FormatUtils {
     }
 
     public static String formatAmount(String amount) {
-        if (amount.contains(".")){
+        if (!amount.contains(".00")){
             formatter.setMinimumFractionDigits(2);
+            formatter.setMaximumFractionDigits(2);
         }
         else{
             formatter.setMaximumFractionDigits(0);
+            formatter.setMinimumFractionDigits(0);
         }
         return formatter.format(new BigDecimal(amount));
     }
