@@ -82,10 +82,10 @@ public class RateAdapter extends RecyclerView.Adapter<RateAdapter.RateVH> {
         void checkWeekChanges(Currencies rate) {
 
             boolean isSellRateFading = Double.parseDouble(getSellRateByDate(rate, 0)) <
-                    Double.parseDouble(getSellRateByDate(rate, 6));
+                    Double.parseDouble(getSellRateByDate(rate, rate.ratesByDate.size() - 1));
 
             boolean isBuyRateFading = Double.parseDouble(getBuyRateByDate(rate, 0)) <
-                    Double.parseDouble(getBuyRateByDate(rate, 6));
+                    Double.parseDouble(getBuyRateByDate(rate, rate.ratesByDate.size() - 1));
 
             if (isSellRateFading)
                 arrowSell.setImageDrawable(itemView.getResources().getDrawable(R.drawable.down_arrow));

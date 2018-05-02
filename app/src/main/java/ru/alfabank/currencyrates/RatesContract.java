@@ -23,11 +23,11 @@ public interface RatesContract {
 
         void detachView();
 
-        void load();
+        void load(String date);
     }
 
     interface Repo {
 
-        Single<RateResponse> load();
+        Single<RateResponse> load(String date);
     }
 }

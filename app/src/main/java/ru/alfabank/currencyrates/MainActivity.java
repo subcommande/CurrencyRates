@@ -11,7 +11,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.EditText;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -28,6 +31,9 @@ public class MainActivity
     private View errorTextView;
     private Toolbar toolbar;
     private RecyclerView recyclerView;
+    private EditText dayText;
+    private EditText monthText;
+    private EditText yearText;
     @Inject
     RatesContract.Presenter presenter;
 
@@ -56,12 +62,28 @@ public class MainActivity
         load();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        load();
+    }
+
     private void init() {
+        dayText = findViewById(R.id.day);
+        monthText = findViewById(R.id.month);
+        yearText = findViewById(R.id.year);
         toolbar = findViewById(R.id.toolbar);
         swipeRefreshLayout = findViewById(R.id.swipeToRefreshLayout);
         recyclerView = findViewById(R.id.recyclerView);
         progressBar = findViewById(R.id.progressBar);
         errorTextView = findViewById(R.id.errorTextView);
+
+        Date now = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String dateFromTexts = sdf.format(now);
+        dayText.setText(dateFromTexts.split("-")[2]);
+        monthText.setText(dateFromTexts.split("-")[1]);
+        yearText.setText(dateFromTexts.split("-")[0]);
     }
 
     @Override
@@ -71,7 +93,12 @@ public class MainActivity
     }
 
     private void load() {
-        presenter.load();
+        StringBuilder sbDate = new StringBuilder();
+        sbDate.append(yearText.getText()).append('-');
+        sbDate.append(monthText.getText()).append('-');
+        sbDate.append(dayText.getText());
+
+        presenter.load(sbDate.toString());
     }
 
     @Override

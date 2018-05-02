@@ -24,10 +24,10 @@ public class RatesPresenter implements RatesContract.Presenter {
     }
 
     @Override
-    public void load() {
+    public void load(String date) {
 
 
-        repo.load()
+        repo.load(date)
                 .subscribe(new SingleObserver<RateResponse>() {
                     @Override
                     public void onSubscribe(Disposable d) {

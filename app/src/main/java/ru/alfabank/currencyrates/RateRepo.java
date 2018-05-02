@@ -14,23 +14,36 @@ public class RateRepo implements RatesContract.Repo {
 
     private final Api api;
     private Single<RateResponse> cache;
-    private String currentDate;
 
     public RateRepo(Api api) {
         this.api = api;
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        Date date = new Date();
-        date.setDate(date.getDate() - 7);
-        currentDate = sdf.format(date) + "T00:00:00.000+0400";
     }
 
     @Override
-    public Single<RateResponse> load() {
+    public Single<RateResponse> load(String date) {
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        //Date date = new Date();
+        //date.setDate(date.getDate() - 7);
+        Date current = new Date();
+        Date weekAgo;
+        try {
+            current = sdf.parse(date);
+        } catch (Exception e) {
+
+        }
+
+        weekAgo = current;
+        weekAgo.setDate(weekAgo.getDay() - 7);
+
+        String dateWeekAgo = sdf.format(weekAgo) + "T00:00:00.000+0400";
+        String dateCurrent = date + "T23:59:59.000+0400";
 
         Map<String, String> requestBody = new HashMap<>();
 
         requestBody.put("operationId", "Currency:GetCurrencyRates");
-        requestBody.put("dateFrom", currentDate);
+        requestBody.put("dateTo", dateCurrent);
+        requestBody.put("dateFrom", dateWeekAgo);
 
         cache = api.loadRates(requestBody)
                 .subscribeOn(Schedulers.io())

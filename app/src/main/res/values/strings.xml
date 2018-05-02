@@ -3,4 +3,7 @@
     <string name="unable_to_load_data">Не удалось загрузить данные</string>
     <string name="alert_message">Check your Internet connection.</string>
     <string name="alert_pos_button">Open settings</string>
+    <string name="day">d</string>
+    <string name="month">m</string>
+    <string name="year">yyyy</string>
 </resources>

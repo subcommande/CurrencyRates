@@ -20,9 +20,51 @@
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerView"
-            android:layout_height="match_parent"
-            android:layout_width="match_parent" />
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </android.support.v7.widget.RecyclerView>
+
     </android.support.v4.widget.SwipeRefreshLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal">
+
+        <EditText
+            android:id="@+id/day"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textSize="30sp"
+            android:singleLine="true"
+            android:imeOptions="actionDone"
+            android:digits="0,1,2,3,4,5,6,7,8,9"
+            android:hint="@string/day"/>
+
+        <EditText
+            android:id="@+id/month"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textSize="30sp"
+            android:singleLine="true"
+            android:imeOptions="actionDone"
+            android:digits="0,1,2,3,4,5,6,7,8,9"
+            android:hint="@string/month"/>
+
+        <EditText
+            android:id="@+id/year"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textSize="30sp"
+            android:singleLine="true"
+            android:imeOptions="actionDone"
+            android:digits="0,1,2,3,4,5,6,7,8,9"
+            android:hint="@string/year"/>
+
+    </LinearLayout>
 
     <ProgressBar
         android:id="@+id/progressBar"
