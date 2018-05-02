@@ -14,9 +14,14 @@ public class RateRepo implements RatesContract.Repo {
 
     private final Api api;
     private Single<RateResponse> cache;
+    private String currentDate;
 
     public RateRepo(Api api) {
         this.api = api;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = new Date();
+        date.setDate(date.getDate() - 7);
+        currentDate = sdf.format(date) + "T00:00:00.000+0400";
     }
 
     @Override
@@ -26,12 +31,7 @@ public class RateRepo implements RatesContract.Repo {
             Map<String, String> requestBody = new HashMap<>();
 
             requestBody.put("operationId", "Currency:GetCurrencyRates");
-
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            Date date = new Date();
-            date.setDate(date.getDate() - 7);
-            String currentDate = sdf.format(date) + "T00:00:00.000+0400";
-            requestBody.put("dateFrom", String.format("%s", currentDate));
+            requestBody.put("dateFrom", currentDate);
 
             cache = api.loadRates(requestBody)
                     .subscribeOn(Schedulers.io())
