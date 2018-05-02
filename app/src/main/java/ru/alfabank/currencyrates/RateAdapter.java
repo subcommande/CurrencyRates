@@ -72,8 +72,8 @@ public class RateAdapter extends RecyclerView.Adapter<RateAdapter.RateVH> {
             name.setText(rate.code);
             description.setText(rate.description);
 
-            sellRate.setText(FormatUtils.formatAmount(getTodaySellRate(rate)));
-            buyRate.setText(FormatUtils.formatAmount(getTodayBuyRate(rate)));
+            sellRate.setText(FormatUtils.formatAmount(getSellRateByDate(rate, 0)));
+            buyRate.setText(FormatUtils.formatAmount(getBuyRateByDate(rate, 0)));
 
             checkWeekChanges(rate);
 
@@ -81,11 +81,11 @@ public class RateAdapter extends RecyclerView.Adapter<RateAdapter.RateVH> {
 
         void checkWeekChanges(Currencies rate) {
 
-            boolean isSellRateFading = Double.parseDouble(getTodaySellRate(rate)) <
-                    Double.parseDouble(getWeekAgoSellRate(rate));
+            boolean isSellRateFading = Double.parseDouble(getSellRateByDate(rate, 0)) <
+                    Double.parseDouble(getSellRateByDate(rate, 6));
 
-            boolean isBuyRateFading = Double.parseDouble(getTodayBuyRate(rate)) <
-                    Double.parseDouble(getWeekAgoBuyRate(rate));
+            boolean isBuyRateFading = Double.parseDouble(getBuyRateByDate(rate, 0)) <
+                    Double.parseDouble(getBuyRateByDate(rate, 6));
 
             if (isSellRateFading)
                 arrowSell.setImageDrawable(itemView.getResources().getDrawable(R.drawable.down_arrow));
@@ -99,17 +99,11 @@ public class RateAdapter extends RecyclerView.Adapter<RateAdapter.RateVH> {
 
         }
 
-        private String getTodaySellRate(Currencies rate) {
-            return rate.ratesByDate.get(0).currencyRates.get(0).sellRate;
+        private String getSellRateByDate(Currencies rate, int date) {
+            return rate.ratesByDate.get(date).currencyRates.get(0).sellRate;
         }
-        private String getTodayBuyRate(Currencies rate) {
-            return rate.ratesByDate.get(0).currencyRates.get(0).buyRate;
-        }
-        private String getWeekAgoSellRate(Currencies rate) {
-            return rate.ratesByDate.get(6).currencyRates.get(0).sellRate;
-        }
-        private String getWeekAgoBuyRate(Currencies rate) {
-            return rate.ratesByDate.get(6).currencyRates.get(0).buyRate;
+        private String getBuyRateByDate(Currencies rate, int date) {
+            return rate.ratesByDate.get(date).currencyRates.get(0).buyRate;
         }
     }
 }
