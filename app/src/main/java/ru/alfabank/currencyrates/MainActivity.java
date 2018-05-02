@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -50,7 +51,12 @@ public class MainActivity
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                load();
+                if (checkEditTexts())
+                    load();
+                else {
+                    createDateToast();
+                    turnOffSwipeRefresh();
+                }
             }
         });
 
@@ -65,7 +71,10 @@ public class MainActivity
     @Override
     protected void onResume() {
         super.onResume();
-        load();
+        if (checkEditTexts())
+            load();
+        else
+            createDateToast();
     }
 
     private void init() {
@@ -84,6 +93,38 @@ public class MainActivity
         dayText.setText(dateFromTexts.split("-")[2]);
         monthText.setText(dateFromTexts.split("-")[1]);
         yearText.setText(dateFromTexts.split("-")[0]);
+    }
+
+    private boolean checkEditTexts() {
+        if (Integer.parseInt(dayText.getText().toString()) > 31 || Integer.parseInt(dayText.getText().toString()) == 0) {
+            return false;
+        }
+        if (Integer.parseInt(monthText.getText().toString()) > 12 || Integer.parseInt(monthText.getText().toString()) == 0 ) {
+            return false;
+        }
+        if (Integer.parseInt(yearText.getText().toString()) > new Date().getYear() + 1900 || Integer.parseInt(yearText.getText().toString()) == 0) {
+            return false;
+        }
+
+        if (Integer.parseInt(yearText.getText().toString()) < new Date().getYear() + 1900 - 10){
+            return false;
+        }
+        if (Integer.parseInt(yearText.getText().toString()) == (new Date().getYear() + 1900)) {
+
+            if (Integer.parseInt(monthText.getText().toString()) > new Date().getMonth() + 1) {
+                return false;
+            }
+            if (Integer.parseInt(monthText.getText().toString()) == new Date().getMonth() + 1){
+                if (Integer.parseInt(dayText.getText().toString()) > new Date().getDate()) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    private void createDateToast() {
+        Toast.makeText(this, "Wrong date.", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -119,6 +160,7 @@ public class MainActivity
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 startActivity(new Intent(Settings.ACTION_SETTINGS));
+                finish();
             }
         });
 
