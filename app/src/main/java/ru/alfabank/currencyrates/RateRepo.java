@@ -25,19 +25,18 @@ public class RateRepo implements RatesContract.Repo {
     }
 
     @Override
-    public Single<RateResponse> load(boolean refresh) {
-        if (refresh) cache = null;
-        if (cache == null) {
-            Map<String, String> requestBody = new HashMap<>();
+    public Single<RateResponse> load() {
 
-            requestBody.put("operationId", "Currency:GetCurrencyRates");
-            requestBody.put("dateFrom", currentDate);
+        Map<String, String> requestBody = new HashMap<>();
 
-            cache = api.loadRates(requestBody)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .cache();
-        }
+        requestBody.put("operationId", "Currency:GetCurrencyRates");
+        requestBody.put("dateFrom", currentDate);
+
+        cache = api.loadRates(requestBody)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .cache();
+
         return cache;
     }
 }

@@ -28,7 +28,8 @@ public class MainActivity
     private View errorTextView;
     private Toolbar toolbar;
     private RecyclerView recyclerView;
-    @Inject RatesContract.Presenter presenter;
+    @Inject
+    RatesContract.Presenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +44,7 @@ public class MainActivity
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                load(true);
+                load();
             }
         });
 
@@ -52,7 +53,7 @@ public class MainActivity
         recyclerView.setAdapter(rateAdapter);
 
         presenter.attachView(this);
-        load(false);
+        load();
     }
 
     private void init() {
@@ -69,17 +70,13 @@ public class MainActivity
         presenter.detachView();
     }
 
-    private void load(boolean refresh) {
-        presenter.load(refresh);
+    private void load() {
+        presenter.load();
     }
 
     @Override
-    public void showLoading(boolean refresh) {
-        if (!refresh) {
-            swipeRefreshLayout.setVisibility(View.GONE);
-            progressBar.setVisibility(View.VISIBLE);
-            errorTextView.setVisibility(View.GONE);
-        }
+    public void showLoading() {
+        errorTextView.setVisibility(View.GONE);
     }
 
     @Override
@@ -88,17 +85,17 @@ public class MainActivity
         swipeRefreshLayout.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.GONE);
 
-        AlertDialog.Builder adb = new AlertDialog.Builder(this);
-        adb.setMessage(getString(R.string.alert_message));
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
+        alertBuilder.setMessage(getString(R.string.alert_message));
 
-        adb.setPositiveButton(R.string.alert_pos_button, new DialogInterface.OnClickListener() {
+        alertBuilder.setPositiveButton(R.string.alert_pos_button, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 startActivity(new Intent(Settings.ACTION_SETTINGS));
             }
         });
 
-        adb.create().show();
+        alertBuilder.create().show();
 
     }
 

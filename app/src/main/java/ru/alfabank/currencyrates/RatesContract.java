@@ -10,7 +10,7 @@ public interface RatesContract {
 
     interface View {
 
-        void showLoading(boolean refresh);
+        void showLoading();
 
         void showError();
 
@@ -23,11 +23,11 @@ public interface RatesContract {
 
         void detachView();
 
-        void load(boolean refresh);
+        void load();
     }
 
     interface Repo {
 
-        Single<RateResponse> load(boolean refresh);
+        Single<RateResponse> load();
     }
 }
