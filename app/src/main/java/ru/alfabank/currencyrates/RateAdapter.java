@@ -4,7 +4,6 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -25,7 +24,7 @@ public class RateAdapter extends RecyclerView.Adapter<RateAdapter.RateVH> {
     public RateAdapter() {
         super();
         formatter = new DecimalFormat();
-        formatter.setMinimumFractionDigits(2);;
+        formatter.setMinimumFractionDigits(2);
         formatter.setGroupingUsed(true);
         formatter.setGroupingSize(3);
         DecimalFormatSymbols symbols = new DecimalFormatSymbols();
