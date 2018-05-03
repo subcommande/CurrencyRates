@@ -20,6 +20,10 @@ public class FormatUtils {
     }
 
     public static String formatAmount(String amount) {
+        if ((amount == null) || (amount == "")) {
+            return "load_err";
+        }
+
         if (!amount.contains(".00")){
             formatter.setMinimumFractionDigits(2);
             formatter.setMaximumFractionDigits(2);

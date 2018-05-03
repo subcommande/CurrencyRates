@@ -1,6 +1,7 @@
 package ru.alfabank.currencyrates;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -34,7 +35,11 @@ public class RateRepo implements RatesContract.Repo {
         }
 
         weekAgo = current;
-        weekAgo.setDate(weekAgo.getDay() - 7);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(current);
+        //weekAgo.setDate(weekAgo.getDay() - 7);
+        calendar.set(Calendar.DAY_OF_MONTH, weekAgo.getDay() - 7);
+        weekAgo = calendar.getTime();
 
         String dateWeekAgo = sdf.format(weekAgo) + "T00:00:00.000+0400";
         String dateCurrent = date + "T23:59:59.000+0400";

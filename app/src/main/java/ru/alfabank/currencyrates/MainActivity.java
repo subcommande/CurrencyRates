@@ -96,6 +96,16 @@ public class MainActivity
     }
 
     private boolean checkEditTexts() {
+        if (dayText.getText().toString().equals("") || dayText.getText().toString().contains(",")) {
+            return false;
+        }
+        if (monthText.getText().toString().equals("") || monthText.getText().toString().contains(",")) {
+            return false;
+        }
+        if (yearText.getText().toString().equals("") || yearText.getText().toString().contains(",")) {
+            return false;
+        }
+
         if (Integer.parseInt(dayText.getText().toString()) > 31 || Integer.parseInt(dayText.getText().toString()) == 0) {
             return false;
         }

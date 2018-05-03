@@ -2,15 +2,11 @@ package ru.alfabank.currencyrates;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +15,6 @@ import ru.alfabank.currencyrates.models.Currencies;
 public class RateAdapter extends RecyclerView.Adapter<RateAdapter.RateVH> {
 
     private final List<Currencies> items = new ArrayList<>();
-    //private final DecimalFormat formatter;
 
     public RateAdapter() {
         super();
@@ -81,11 +76,29 @@ public class RateAdapter extends RecyclerView.Adapter<RateAdapter.RateVH> {
 
         void checkWeekChanges(Currencies rate) {
 
-            boolean isSellRateFading = Double.parseDouble(getSellRateByDate(rate, 0)) <
-                    Double.parseDouble(getSellRateByDate(rate, rate.ratesByDate.size() - 1));
+            if (rate == null) {
+                return;
+            }
 
-            boolean isBuyRateFading = Double.parseDouble(getBuyRateByDate(rate, 0)) <
-                    Double.parseDouble(getBuyRateByDate(rate, rate.ratesByDate.size() - 1));
+            double currentSellRate;
+            double currentBuyRate;
+            double previousSellRate;
+            double previousBuyRate;
+
+            try {
+                currentSellRate = Double.parseDouble(getSellRateByDate(rate, 0));
+                currentBuyRate = Double.parseDouble(getBuyRateByDate(rate, 0));
+                previousSellRate = Double.parseDouble(getSellRateByDate(rate, rate.ratesByDate.size() - 1));
+                previousBuyRate = Double.parseDouble(getBuyRateByDate(rate, rate.ratesByDate.size() - 1));
+            } catch (Exception e) {
+                arrowBuy.setImageDrawable(itemView.getResources().getDrawable(R.drawable.warning));
+                arrowSell.setImageDrawable(itemView.getResources().getDrawable(R.drawable.warning));
+                return;
+            }
+
+            boolean isSellRateFading = currentSellRate < previousSellRate;
+
+            boolean isBuyRateFading = currentBuyRate < previousBuyRate;
 
             if (isSellRateFading)
                 arrowSell.setImageDrawable(itemView.getResources().getDrawable(R.drawable.down_arrow));
@@ -100,10 +113,14 @@ public class RateAdapter extends RecyclerView.Adapter<RateAdapter.RateVH> {
         }
 
         private String getSellRateByDate(Currencies rate, int date) {
-            return rate.ratesByDate.get(date).currencyRates.get(0).sellRate;
+            String toReturn = rate.ratesByDate.get(date).currencyRates.get(0).sellRate;
+
+            return toReturn;
         }
         private String getBuyRateByDate(Currencies rate, int date) {
-            return rate.ratesByDate.get(date).currencyRates.get(0).buyRate;
+            String toReturn = rate.ratesByDate.get(date).currencyRates.get(0).buyRate;
+
+            return toReturn;
         }
     }
 }
