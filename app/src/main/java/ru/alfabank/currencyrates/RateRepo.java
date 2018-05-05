@@ -36,7 +36,7 @@ public class RateRepo implements RatesContract.Repo {
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(current);
-        calendar.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH) - 7);
+        calendar.set(Calendar.DAY_OF_YEAR, calendar.get(Calendar.DAY_OF_YEAR) - 7);
         weekAgo = calendar.getTime();
 
         String dateWeekAgo = sdf.format(weekAgo) + "T00:00:00.000+0400";
